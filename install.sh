@@ -64,41 +64,59 @@ mkdir -p docs
 
 echo "✅ Directories created"
 
-# Copy files
+# Download and copy files from GitHub
 echo ""
-echo "📋 Copying system files..."
+echo "📋 Downloading system files from GitHub..."
 
+GITHUB_RAW_URL="https://raw.githubusercontent.com/codeoutin/claude-code-agency/main"
+
+# Download command files
 if [ ! -f ".claude/commands/task_complete.md" ]; then
-    cp commands/task_complete.md .claude/commands/
-    echo "✅ Copied task_complete command"
+    if curl -fsSL "$GITHUB_RAW_URL/commands/task_complete.md" -o ".claude/commands/task_complete.md"; then
+        echo "✅ Downloaded task_complete command"
+    else
+        echo "❌ Failed to download task_complete command"
+    fi
 fi
 
 if [ ! -f ".claude/commands/task_finish.md" ]; then
-    cp commands/task_finish.md .claude/commands/
-    echo "✅ Copied task_finish command"
+    if curl -fsSL "$GITHUB_RAW_URL/commands/task_finish.md" -o ".claude/commands/task_finish.md"; then
+        echo "✅ Downloaded task_finish command"
+    else
+        echo "❌ Failed to download task_finish command"
+    fi
 fi
 
-# Copy agent files
+# Download agent files
 AGENTS=("tc-context-gatherer" "tc-task-planner" "tc-dev-monitor" "tc-implementation-agent" "tc-quality-reviewer" "tc-frontend-tester" "tc-codex-critic")
 
 for agent in "${AGENTS[@]}"; do
     if [ ! -f ".claude/agents/${agent}.md" ]; then
-        cp "agents/${agent}.md" ".claude/agents/"
-        echo "✅ Copied ${agent} agent"
+        if curl -fsSL "$GITHUB_RAW_URL/agents/${agent}.md" -o ".claude/agents/${agent}.md"; then
+            echo "✅ Downloaded ${agent} agent"
+        else
+            echo "❌ Failed to download ${agent} agent"
+        fi
     fi
 done
 
-# Copy CLAUDE.md template
+# Download CLAUDE.md template
 if [ ! -f "CLAUDE.md" ]; then
-    cp examples/CLAUDE.md ./CLAUDE.md
-    echo "✅ Copied CLAUDE.md template"
-    echo "⚠️  IMPORTANT: Edit CLAUDE.md with your project details"
+    if curl -fsSL "$GITHUB_RAW_URL/examples/CLAUDE.md" -o "./CLAUDE.md"; then
+        echo "✅ Downloaded CLAUDE.md template"
+        echo "⚠️  IMPORTANT: Edit CLAUDE.md with your project details"
+    else
+        echo "❌ Failed to download CLAUDE.md template"
+    fi
 fi
 
-# Copy Claude settings
+# Download Claude settings
 if [ ! -f ".claude/settings.local.json" ]; then
-    cp examples/settings.local.json .claude/settings.local.json
-    echo "✅ Copied Claude settings"
+    if curl -fsSL "$GITHUB_RAW_URL/examples/settings.local.json" -o ".claude/settings.local.json"; then
+        echo "✅ Downloaded Claude settings"
+    else
+        echo "❌ Failed to download Claude settings"
+    fi
 fi
 
 # Note: MCP servers will be configured to use npx for on-demand installation
