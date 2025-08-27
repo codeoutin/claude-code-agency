@@ -1,6 +1,7 @@
 # Claude Code Task Completion System
 
 A task chain system for automated feature implementation using Claude Code agents with comprehensive quality validation.
+Using this command will keep the Terminal clean and all the agents document their progress.
 
 ## 🚀 Personal Motivation
 
@@ -13,6 +14,8 @@ With the introduction of Sub Agents and MCP servers, I finally found a workflow 
 These commands can run for hours and you will likely run into limitations if you are not on a Max Plan of Claude.
 
 I share this workflow because I started out with publicly available agent descriptions, MCP server configurations and other information on GitHub and Reddit too and want to open this workflow for discussion and further improvements.
+
+I often had issues where i closed the Terminal and picking up the task again would take a long time and introduce new errors and the AI would forget my previous concerns. The agents will document their progress and the Terminal will stay clean.
 
 This command chain is using various MCP servers that are optional but highly recommended. My subscriptions are Claude on the 100 USD plan and ChatGPT on the 20 USD plan and I often run this command parallel to develop 3-4 features at once. I am using auto-accept to almost fully automate the process of development.
 
