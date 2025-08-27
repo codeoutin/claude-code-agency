@@ -2,6 +2,22 @@
 
 A multi-agent orchestration system that automates feature implementation with production-ready quality standards.
 
+## 🚀 Personal Motivation
+
+*From the creator:*
+
+I've spent whole weekends coding huge tasks with AI. Starting with Chats (ChatGPT, Claude, DeepSeek, Gemini), to Cursor, to Claude Code. I ran often into the limitations of AI coding agents and I'm always trying to optimize my prompts.
+
+With the introduction of Sub Agents and MCP servers, I finally found a workflow for complex tasks to have them implemented with a high quality standard that suits my projects.
+
+These commands can run for hours and you will likely run into limitations if you are not on a Max Plan of Claude.
+
+I share this workflow because I started out with publicly available agent descriptions, MCP server configurations and other information on GitHub and Reddit too and want to open this workflow for discussion and further improvements.
+
+I often had issues where i closed the Terminal and picking up the task again would take a long time and introduce new errors and the AI would forget my previous concerns. The agents will document their progress and the Terminal will stay clean.
+
+This command chain is using various MCP servers that are optional but highly recommended. My subscriptions are Claude on the 100 USD plan and ChatGPT on the 20 USD plan and I often run this command parallel to develop 3-4 features at once. I am using auto-accept to almost fully automate the process of development.
+
 ## Quick Start
 
 ### One-Line Install
@@ -30,6 +46,10 @@ This system uses 6 specialized AI agents working together:
 4. **Quality Reviewer** - Verifies all quality gates pass
 5. **Frontend Tester** - Validates UI/UX with automated tests
 6. **Code Critic** - External unbiased quality assessment
+
+## 📸 System in Action
+
+![Task Completion System Screenshot](https://github.com/user-attachments/assets/46dccd14-2eda-4d4c-a343-03a3e5731bd1)
 
 ## Usage
 
@@ -64,8 +84,10 @@ claude-code /task_finish "path/to/task/directory"
 ## Requirements
 
 - Node.js 18+
-- Claude Code CLI
+- Claude Code CLI ([install guide](https://docs.anthropic.com/en/docs/claude-code/setup))
 - TypeScript project with lint/build commands
+- 4GB+ RAM (for Claude Code)
+- Anthropic account (Pro/Max plan recommended)
 
 ## Configuration
 

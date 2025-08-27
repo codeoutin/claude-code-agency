@@ -35,7 +35,20 @@ echo "✅ npm $(npm --version) found"
 # Check Claude Code
 if ! command -v claude &> /dev/null; then
     echo "⚠️  Claude Code CLI not found. Installing..."
-    npm install -g @anthropic/claude-code
+    echo "   Attempting npm installation (recommended)..."
+    
+    if npm install -g @anthropic-ai/claude-code; then
+        echo "✅ Claude Code CLI installed via npm"
+    else
+        echo "❌ npm installation failed. Please install manually:"
+        echo "   npm install -g @anthropic-ai/claude-code"
+        echo ""
+        echo "   Or use the native binary installation:"
+        echo "   curl -fsSL https://claude.ai/install.sh | sh"
+        echo ""
+        echo "   For more details, visit: https://docs.anthropic.com/en/docs/claude-code/setup"
+        exit 1
+    fi
 else
     echo "✅ Claude Code CLI found"
 fi
