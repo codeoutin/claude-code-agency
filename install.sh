@@ -88,28 +88,10 @@ if [ ! -f ".claude/settings.local.json" ]; then
     echo "✅ Copied Claude settings"
 fi
 
-# Install MCP servers
+# Note: MCP servers will be configured to use npx for on-demand installation
 echo ""
-echo "🔧 Installing MCP servers..."
-
-echo "Installing gpt-codex..."
-npm install -g @anthropic/gpt-codex-mcp 2>/dev/null || echo "⚠️  gpt-codex installation failed (may require manual setup)"
-
-echo "Installing playwright..."
-npm install -g @anthropic/playwright-mcp 2>/dev/null || echo "⚠️  playwright installation failed"
-
-echo "Installing context7..."
-npm install -g @anthropic/context7-mcp 2>/dev/null || echo "⚠️  context7 installation failed"
-
-echo "Installing sequential-thinking..."
-npm install -g @anthropic/sequential-thinking-mcp 2>/dev/null || echo "⚠️  sequential-thinking installation failed"
-
-echo "Installing ide integration..."
-npm install -g @anthropic/ide-mcp 2>/dev/null || echo "⚠️  ide-mcp installation failed"
-
-# Install Playwright browser
-echo "Installing Playwright browser..."
-npx playwright install chromium 2>/dev/null || echo "⚠️  Playwright browser installation failed"
+echo "🔧 MCP servers will be configured for on-demand installation..."
+echo "✅ MCP configuration ready (packages installed on first use)"
 
 # Create sample configuration
 echo ""
@@ -136,29 +118,19 @@ fi
 cat > claude-mcp-config.json << EOF
 {
   "mcp_servers": {
-    "gpt-codex": {
-      "command": "npx",
-      "args": ["-y", "@anthropic/gpt-codex-mcp"],
-      "env": {}
-    },
-    "playwright": {
-      "command": "npx", 
-      "args": ["-y", "@anthropic/playwright-mcp"],
-      "env": {}
-    },
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@anthropic/context7-mcp"], 
-      "env": {}
-    },
     "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@anthropic/sequential-thinking-mcp"],
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
       "env": {}
     },
-    "ide": {
+    "filesystem": {
       "command": "npx",
-      "args": ["-y", "@anthropic/ide-mcp"],
+      "args": ["-y", "@modelcontextprotocol/server-filesystem"],
+      "env": {}
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
       "env": {}
     }
   }
@@ -176,14 +148,16 @@ echo "1. 🎯 CRITICAL: Configure CLAUDE.md for your project:"
 echo "   nano CLAUDE.md"
 echo "   # Update project overview, tech stack, and development commands"
 echo ""
-echo "2. Add the MCP configuration to your Claude Code config:"
-echo "   cat claude-mcp-config.json"
+echo "2. Add MCP servers to Claude Code:"
+echo "   claude mcp add sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking"
+echo "   claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem"
+echo "   claude mcp add memory -- npx -y @modelcontextprotocol/server-memory"
 echo ""
 echo "3. Configure for your project:"
 echo "   - Update test credentials in .claude/agents/tc-frontend-tester.md"
 echo "   - Update tech stack in .claude/agents/tc-codex-critic.md"
 echo ""
-echo "3. Test the installation:"
+echo "4. Test the installation:"
 echo "   claude-code --list-commands"
 echo "   claude-code /task_complete \"Add a simple test component\""
 echo ""

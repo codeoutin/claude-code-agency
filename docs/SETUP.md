@@ -27,34 +27,36 @@ claude-code --version
 
 Add the following to your Claude Code configuration file:
 
-**Location**: `~/.claude/config.json` (or your Claude Code config path)
+Use the Claude Code CLI to add MCP servers:
+
+```bash
+# Add required MCP servers
+claude mcp add sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking
+claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem  
+claude mcp add memory -- npx -y @modelcontextprotocol/server-memory
+
+# Verify servers are configured
+claude mcp list
+```
+
+Or manually add to your Claude Code config file:
 
 ```json
 {
   "mcp_servers": {
-    "gpt-codex": {
-      "command": "npx",
-      "args": ["-y", "@anthropic/gpt-codex-mcp"],
-      "env": {}
-    },
-    "playwright": {
-      "command": "npx", 
-      "args": ["-y", "@anthropic/playwright-mcp"],
-      "env": {}
-    },
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@anthropic/context7-mcp"], 
-      "env": {}
-    },
     "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@anthropic/sequential-thinking-mcp"],
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
       "env": {}
     },
-    "ide": {
+    "filesystem": {
       "command": "npx",
-      "args": ["-y", "@anthropic/ide-mcp"],
+      "args": ["-y", "@modelcontextprotocol/server-filesystem"],
+      "env": {}
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
       "env": {}
     }
   }
