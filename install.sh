@@ -33,7 +33,7 @@ fi
 echo "✅ npm $(npm --version) found"
 
 # Check Claude Code
-if ! command -v claude-code &> /dev/null; then
+if ! command -v claude &> /dev/null; then
     echo "⚠️  Claude Code CLI not found. Installing..."
     npm install -g @anthropic/claude-code
 else
