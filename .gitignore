@@ -1,0 +1,34 @@
+# Created when using the system
+claude-tasks/
+claude-mcp-config.json
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build outputs (when testing)
+dist/
+build/
+.next/
+.tsbuildinfo
