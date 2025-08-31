@@ -50,22 +50,7 @@ The agent will:
 
 ## STEP 2-6: Error-Fixing Implementation Loop (UNLIMITED CYCLES)
 
-### STEP 2A: Development Server Monitor (CONTINUOUS)
-
-**Agent:** `tc-dev-monitor` 
-**Mission:** Continue monitoring or restart monitoring from where task_complete left off
-
-If dev server already running from previous session:
-- Verify server still responsive
-- Continue monitoring with existing PID
-- Resume error detection from last known state
-
-If dev server not running:
-- Restart your dev server (e.g., `npm run dev`) with fresh monitoring
-- Initialize new dev-status.json for finish phase
-- Begin continuous error detection
-
-### STEP 2B: Specialized Error-Fixing Implementation Agent
+### STEP 2: Specialized Error-Fixing Implementation Agent
 
 **Agent:** `tc-implementation-agent`
 **Mission:** Focus EXCLUSIVELY on error fixing and validation improvement
@@ -99,7 +84,6 @@ If dev server not running:
 - Zero lint errors (not just ≤ baseline)
 - Zero TypeScript errors (not just ≤ baseline) 
 - Clean build with no validation bypasses
-- Dev server stable with no runtime errors
 - All functionality still works (no regression)
 
 ### CYCLE MANAGEMENT
@@ -136,7 +120,6 @@ Once zero errors achieved, run comprehensive verification:
 - Zero TypeScript errors across entire codebase
 - Clean production build
 - All tests pass (if applicable)
-- No runtime errors in dev monitor
 
 ---
 
@@ -172,8 +155,6 @@ Create `{task_directory_path}/finish-report.md`:
 - Lint Errors: 0/0 (100% clean)
 - TypeScript Errors: 0/0 (100% clean)
 - Build Status: SUCCESS (clean)
-- Dev Server: STABLE
-- Runtime Errors: NONE
 
 ## Functionality Verification
 [Confirmation all features still work correctly]
@@ -195,9 +176,8 @@ Create `{task_directory_path}/finish-report.md`:
 Task finish is successful when:
 1. **Validation Tracking Shows 100%**: No remaining errors of any type
 2. **Clean Build Process**: No warnings, errors, or validation bypasses
-3. **Stable Runtime**: Dev monitor reports no errors during testing
-4. **Functionality Preserved**: All features work as originally implemented
-5. **Production Ready**: Immediately deployable quality
+3. **Functionality Preserved**: All features work as originally implemented
+4. **Production Ready**: Immediately deployable quality
 
 ## Task Detection
 

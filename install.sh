@@ -71,24 +71,29 @@ echo "📋 Downloading system files from GitHub..."
 GITHUB_RAW_URL="https://raw.githubusercontent.com/codeoutin/claude-code-agency/main"
 
 # Download command files
-if [ ! -f ".claude/commands/task_complete.md" ]; then
-    if curl -fsSL "$GITHUB_RAW_URL/commands/task_complete.md" -o ".claude/commands/task_complete.md"; then
-        echo "✅ Downloaded task_complete command"
-    else
-        echo "❌ Failed to download task_complete command"
-    fi
-fi
+COMMANDS=("task_complete" "task_finish" "task_easy")
 
-if [ ! -f ".claude/commands/task_finish.md" ]; then
-    if curl -fsSL "$GITHUB_RAW_URL/commands/task_finish.md" -o ".claude/commands/task_finish.md"; then
-        echo "✅ Downloaded task_finish command"
-    else
-        echo "❌ Failed to download task_finish command"
+for cmd in "${COMMANDS[@]}"; do
+    if [ ! -f ".claude/commands/${cmd}.md" ]; then
+        if curl -fsSL "$GITHUB_RAW_URL/commands/${cmd}.md" -o ".claude/commands/${cmd}.md"; then
+            echo "✅ Downloaded ${cmd} command"
+        else
+            echo "❌ Failed to download ${cmd} command"
+        fi
     fi
-fi
+done
 
-# Download agent files
-AGENTS=("tc-context-gatherer" "tc-task-planner" "tc-dev-monitor" "tc-implementation-agent" "tc-quality-reviewer" "tc-frontend-tester" "tc-codex-critic")
+# Also copy commands to root level for consolidated access
+mkdir -p commands
+for cmd in "${COMMANDS[@]}"; do
+    if [ -f ".claude/commands/${cmd}.md" ] && [ ! -f "commands/${cmd}.md" ]; then
+        cp ".claude/commands/${cmd}.md" "commands/${cmd}.md"
+        echo "✅ Copied ${cmd} command to root level"
+    fi
+done
+
+# Download agent files  
+AGENTS=("tc-context-gatherer" "tc-task-planner" "tc-implementation-agent" "tc-quality-reviewer" "tc-frontend-tester" "tc-codex-critic")
 
 for agent in "${AGENTS[@]}"; do
     if [ ! -f ".claude/agents/${agent}.md" ]; then
@@ -111,11 +116,56 @@ if [ ! -f "CLAUDE.md" ]; then
 fi
 
 # Download Claude settings
+if [ ! -f ".claude/settings.json" ]; then
+    if curl -fsSL "$GITHUB_RAW_URL/.claude/settings.json" -o ".claude/settings.json"; then
+        echo "✅ Downloaded Claude core settings"
+    else
+        echo "❌ Failed to download Claude core settings"
+    fi
+fi
+
 if [ ! -f ".claude/settings.local.json" ]; then
     if curl -fsSL "$GITHUB_RAW_URL/examples/settings.local.json" -o ".claude/settings.local.json"; then
-        echo "✅ Downloaded Claude settings"
+        echo "✅ Downloaded Claude local settings template"
     else
-        echo "❌ Failed to download Claude settings"
+        echo "❌ Failed to download Claude local settings template"
+    fi
+fi
+
+# Download documentation files
+echo "📚 Downloading documentation..."
+mkdir -p docs examples
+
+if [ ! -f "docs/SETUP.md" ]; then
+    if curl -fsSL "$GITHUB_RAW_URL/docs/SETUP.md" -o "docs/SETUP.md"; then
+        echo "✅ Downloaded setup documentation"
+    else
+        echo "❌ Failed to download setup documentation"
+    fi
+fi
+
+if [ ! -f "docs/MCP_SERVERS.md" ]; then
+    if curl -fsSL "$GITHUB_RAW_URL/docs/MCP_SERVERS.md" -o "docs/MCP_SERVERS.md"; then
+        echo "✅ Downloaded MCP servers documentation"
+    else
+        echo "❌ Failed to download MCP servers documentation"
+    fi
+fi
+
+# Download template files
+if [ ! -f "examples/PROJECT_STATUS.md" ]; then
+    if curl -fsSL "$GITHUB_RAW_URL/examples/PROJECT_STATUS.md" -o "examples/PROJECT_STATUS.md"; then
+        echo "✅ Downloaded PROJECT_STATUS.md template"
+    else
+        echo "❌ Failed to download PROJECT_STATUS.md template"
+    fi
+fi
+
+if [ ! -f "examples/PROJECT_DESCRIPTION.md" ]; then
+    if curl -fsSL "$GITHUB_RAW_URL/examples/PROJECT_DESCRIPTION.md" -o "examples/PROJECT_DESCRIPTION.md"; then
+        echo "✅ Downloaded PROJECT_DESCRIPTION.md template"
+    else
+        echo "❌ Failed to download PROJECT_DESCRIPTION.md template"
     fi
 fi
 
@@ -179,23 +229,30 @@ echo "1. 🎯 CRITICAL: Configure CLAUDE.md for your project:"
 echo "   nano CLAUDE.md"
 echo "   # Update project overview, tech stack, and development commands"
 echo ""
-echo "2. Add MCP servers to Claude Code:"
+echo "2. Set up project templates (optional but recommended):"
+echo "   cp examples/PROJECT_STATUS.md ."
+echo "   cp examples/PROJECT_DESCRIPTION.md ."
+echo "   # Then use Claude to customize them:"
+echo "   claude \"Please customize PROJECT_STATUS.md and PROJECT_DESCRIPTION.md for my project\""
+echo ""
+echo "3. Configure agent settings:"
+echo "   # Update test credentials:"
+echo "   claude \"Update .claude/agents/tc-frontend-tester.md with my email: your-email@example.com\""
+echo "   # Update tech stack info:"
+echo "   claude \"Update .claude/agents/tc-codex-critic.md with my tech stack details\""
+echo ""
+echo "4. Add MCP servers to Claude Code:"
 echo "   claude mcp add sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking"
-echo "   claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem"
+echo "   claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem" 
 echo "   claude mcp add memory -- npx -y @modelcontextprotocol/server-memory"
 echo ""
-echo "3. Configure for your project:"
-echo "   - Update test credentials in .claude/agents/tc-frontend-tester.md"
-echo "   - Update tech stack in .claude/agents/tc-codex-critic.md"
+echo "5. Test the installation:"
+echo "   claude /task_easy \"Test the task completion system setup\""
 echo ""
-echo "4. Test the installation:"
-echo "   claude-code --list-commands"
-echo "   claude-code /task_complete \"Add a simple test component\""
-echo ""
-echo "4. Read the documentation:"
+echo "6. Read the documentation:"
 echo "   - README.md for overview and usage"
-echo "   - docs/SETUP.md for detailed configuration"
+echo "   - docs/SETUP.md for detailed configuration"  
 echo "   - docs/MCP_SERVERS.md for MCP server troubleshooting"
-echo "   - examples/ for project-specific configurations"
+echo "   - examples/ for customizable project templates"
 echo ""
 echo "✨ You're ready to build production-ready features with Claude Code!"

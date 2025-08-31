@@ -1,6 +1,7 @@
 # Created when using the system
 claude-tasks/
 claude-mcp-config.json
+.claude/
 
 # Node modules
 node_modules/

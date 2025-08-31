@@ -28,6 +28,117 @@ curl -fsSL https://raw.githubusercontent.com/your-username/claude-code-agency/ma
 
 Or [**download install.sh**](install.sh) and run: `./install.sh`
 
+### Manual Setup
+
+The fastest way to set up the task completion system in your project:
+
+#### Prerequisites
+
+- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code/setup) installed and configured
+- Anthropic account (Pro/Max plan recommended for complex tasks)
+- Git for version control
+
+#### Quick Setup with Claude Code's Built-in Init
+
+1. **Navigate to your project directory**
+   ```bash
+   cd /path/to/your/project
+   ```
+
+2. **Initialize with Claude Code and install task completion system**
+   ```bash
+   # Initialize Claude Code in your project
+   claude
+   /init
+   
+   # Clone the task completion system
+   git clone https://github.com/your-username/claude-code-agency.git temp-claude-agency
+   
+   # Copy the task completion components
+   cp temp-claude-agency/.claude/settings.json .claude/settings.json
+   cp -r temp-claude-agency/agents .claude/
+   cp -r temp-claude-agency/commands .claude/
+   cp -r temp-claude-agency/commands .  # Also copy to root for easy access
+   cp -r temp-claude-agency/examples .
+   cp -r temp-claude-agency/docs .
+   
+   # Clean up
+   rm -rf temp-claude-agency
+   ```
+
+3. **Customize Your Setup**
+   
+   **a. Set up project templates (AI-assisted)**
+   ```bash
+   # Copy the templates
+   cp examples/PROJECT_STATUS.md .
+   cp examples/PROJECT_DESCRIPTION.md .
+   
+   # Use Claude Code to customize them for your project
+   claude "Please customize PROJECT_STATUS.md and PROJECT_DESCRIPTION.md for my project. Replace all placeholder content with details specific to my codebase and project goals."
+   ```
+   
+   **b. Configure agent settings**
+   ```bash
+   # Customize test credentials
+   claude "Update .claude/agents/tc-frontend-tester.md with my email: your-email@example.com"
+   
+   # Update technology stack info
+   claude "Update .claude/agents/tc-codex-critic.md with my tech stack details based on my package.json and codebase"
+   ```
+   
+   **c. Set up local permissions (optional)**
+   ```bash
+   cp examples/settings.local.json .claude/settings.local.json
+   # Edit for any project-specific permissions you need
+   ```
+
+4. **Verify Setup**
+   ```bash
+   # Test the task completion commands
+   claude-code /task_easy "Test the task completion system setup"
+   ```
+
+
+#### File Structure After Installation
+
+```
+your-project/
+├── .claude/
+│   ├── settings.json          # Core permissions and MCP servers
+│   ├── settings.local.json    # Project-specific permissions (optional)
+│   ├── agents/                # Task completion agents
+│   │   ├── tc-context-gatherer.md
+│   │   ├── tc-implementation-agent.md
+│   │   ├── tc-quality-reviewer.md
+│   │   ├── tc-frontend-tester.md
+│   │   ├── tc-codex-critic.md
+│   │   └── tc-task-planner.md
+│   └── commands/              # Command definitions
+│       ├── task_complete.md
+│       ├── task_finish.md
+│       └── task_easy.md
+├── CLAUDE.md                  # Your project documentation
+└── claude-tasks/              # Generated task directories (created automatically)
+```
+
+#### Troubleshooting Manual Installation
+
+**Commands not found:**
+- Verify files are in `.claude/commands/` or `commands/` directory
+- Check that Claude Code CLI is properly installed
+- Try restarting your terminal
+
+**MCP servers not working:**
+- Review `docs/MCP_SERVERS.md` for MCP server setup
+- Check that required MCP servers are installed and configured
+- Verify `.claude/settings.json` has correct MCP server references
+
+**Agents not accessible:**
+- Ensure agent files are in `.claude/agents/` directory
+- Verify agent files have correct frontmatter (name, description, tools, color)
+- Check that agent names match references in command files
+
 ### What You Get
 
 Transform feature requests like *"Add user authentication"* into:
@@ -55,10 +166,10 @@ This system uses 6 specialized AI agents working together:
 
 ```bash
 # Implement any feature
-claude-code /task_complete "Add user authentication with JWT"
+claude /task_complete "Add user authentication with JWT"
 
 # Complete partial implementations
-claude-code /task_finish "path/to/task/directory"
+claude /task_finish "path/to/task/directory"
 ```
 
 ## Perfect For
@@ -112,13 +223,6 @@ claude-tasks/2025-08-27-authentication/
 └── screenshots/           # Visual proof
 ```
 
-## Quality Standards
-
-- **Zero Tolerance**: No new lint/TypeScript errors
-- **Baseline Tracking**: Prevents any regressions  
-- **Multi-Layer Validation**: Independent verification at each step
-- **Production Ready**: Comprehensive error handling and testing
-
 ## Advanced Configuration
 
 For detailed setup and customization options, see:
@@ -131,7 +235,7 @@ For detailed setup and customization options, see:
 **"MCP server not found"**
 ```bash
 # Verify MCP servers installed
-claude-code --check-mcp
+claude --check-mcp
 ```
 
 **"Dev server won't start"**
