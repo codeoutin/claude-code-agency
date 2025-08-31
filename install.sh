@@ -115,20 +115,18 @@ if [ ! -f "CLAUDE.md" ]; then
     fi
 fi
 
-# Download Claude settings
-if [ ! -f ".claude/settings.json" ]; then
-    if curl -fsSL "$GITHUB_RAW_URL/.claude/settings.json" -o ".claude/settings.json"; then
-        echo "✅ Downloaded Claude core settings"
-    else
-        echo "❌ Failed to download Claude core settings"
-    fi
-fi
-
+# Download Claude settings template
 if [ ! -f ".claude/settings.local.json" ]; then
     if curl -fsSL "$GITHUB_RAW_URL/examples/settings.local.json" -o ".claude/settings.local.json"; then
         echo "✅ Downloaded Claude local settings template"
+        echo "⚠️  IMPORTANT: You'll need to configure .claude/settings.json manually"
     else
         echo "❌ Failed to download Claude local settings template"
+        echo ""
+        echo "🔧 Installation script encountered errors. Please use manual installation:"
+        echo "   See README.md 'Manual Setup' section for step-by-step instructions"
+        echo "   https://github.com/codeoutin/claude-code-agency#manual-setup"
+        exit 1
     fi
 fi
 
@@ -225,9 +223,9 @@ echo ""
 echo "🎉 Installation complete!"
 echo ""
 echo "📋 Next steps:"
-echo "1. 🎯 CRITICAL: Configure CLAUDE.md for your project:"
-echo "   nano CLAUDE.md"
-echo "   # Update project overview, tech stack, and development commands"
+echo "1. 🎯 CRITICAL: Set up core Claude Code settings:"
+echo "   claude /init  # This creates .claude/settings.json"
+echo "   # Then customize CLAUDE.md with your project details"
 echo ""
 echo "2. Set up project templates (optional but recommended):"
 echo "   cp examples/PROJECT_STATUS.md ."
@@ -254,5 +252,7 @@ echo "   - README.md for overview and usage"
 echo "   - docs/SETUP.md for detailed configuration"  
 echo "   - docs/MCP_SERVERS.md for MCP server troubleshooting"
 echo "   - examples/ for customizable project templates"
+echo ""
+echo "⚠️  If you encounter any issues, use the Manual Setup instructions in README.md"
 echo ""
 echo "✨ You're ready to build production-ready features with Claude Code!"

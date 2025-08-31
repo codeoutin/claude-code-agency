@@ -23,7 +23,7 @@ This command chain is using various MCP servers that are optional but highly rec
 ### One-Line Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/your-username/claude-code-agency/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/codeoutin/claude-code-agency/main/install.sh | bash
 ```
 
 Or [**download install.sh**](install.sh) and run: `./install.sh`
@@ -52,7 +52,7 @@ The fastest way to set up the task completion system in your project:
    /init
    
    # Clone the task completion system
-   git clone https://github.com/your-username/claude-code-agency.git temp-claude-agency
+   git clone https://github.com/codeoutin/claude-code-agency.git temp-claude-agency
    
    # Copy the task completion components
    cp temp-claude-agency/.claude/settings.json .claude/settings.json
