@@ -55,10 +55,10 @@ The fastest way to set up the task completion system in your project:
    git clone https://github.com/codeoutin/claude-code-agency.git temp-claude-agency
    
    # Copy the task completion components
-   cp temp-claude-agency/.claude/settings.json .claude/settings.json
+   cp temp-claude-agency/examples/settings.json .claude/settings.json
+   cp temp-claude-agency/examples/settings.local.json .claude/settings.local.json
    cp -r temp-claude-agency/agents .claude/
    cp -r temp-claude-agency/commands .claude/
-   cp -r temp-claude-agency/commands .  # Also copy to root for easy access
    cp -r temp-claude-agency/examples .
    cp -r temp-claude-agency/docs .
    

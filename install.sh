@@ -83,14 +83,7 @@ for cmd in "${COMMANDS[@]}"; do
     fi
 done
 
-# Also copy commands to root level for consolidated access
-mkdir -p commands
-for cmd in "${COMMANDS[@]}"; do
-    if [ -f ".claude/commands/${cmd}.md" ] && [ ! -f "commands/${cmd}.md" ]; then
-        cp ".claude/commands/${cmd}.md" "commands/${cmd}.md"
-        echo "✅ Copied ${cmd} command to root level"
-    fi
-done
+# Commands are now available in .claude/commands/ (Claude Code standard location)
 
 # Download agent files  
 AGENTS=("tc-context-gatherer" "tc-task-planner" "tc-implementation-agent" "tc-quality-reviewer" "tc-frontend-tester" "tc-codex-critic")
@@ -115,18 +108,25 @@ if [ ! -f "CLAUDE.md" ]; then
     fi
 fi
 
-# Download Claude settings template
-if [ ! -f ".claude/settings.local.json" ]; then
-    if curl -fsSL "$GITHUB_RAW_URL/examples/settings.local.json" -o ".claude/settings.local.json"; then
-        echo "✅ Downloaded Claude local settings template"
-        echo "⚠️  IMPORTANT: You'll need to configure .claude/settings.json manually"
+# Download Claude settings
+if [ ! -f ".claude/settings.json" ]; then
+    if curl -fsSL "$GITHUB_RAW_URL/examples/settings.json" -o ".claude/settings.json"; then
+        echo "✅ Downloaded Claude core settings"
     else
-        echo "❌ Failed to download Claude local settings template"
+        echo "❌ Failed to download Claude core settings"
         echo ""
         echo "🔧 Installation script encountered errors. Please use manual installation:"
         echo "   See README.md 'Manual Setup' section for step-by-step instructions"
         echo "   https://github.com/codeoutin/claude-code-agency#manual-setup"
         exit 1
+    fi
+fi
+
+if [ ! -f ".claude/settings.local.json" ]; then
+    if curl -fsSL "$GITHUB_RAW_URL/examples/settings.local.json" -o ".claude/settings.local.json"; then
+        echo "✅ Downloaded Claude additional settings template"
+    else
+        echo "❌ Failed to download Claude additional settings template"
     fi
 fi
 
@@ -223,9 +223,9 @@ echo ""
 echo "🎉 Installation complete!"
 echo ""
 echo "📋 Next steps:"
-echo "1. 🎯 CRITICAL: Set up core Claude Code settings:"
-echo "   claude /init  # This creates .claude/settings.json"
-echo "   # Then customize CLAUDE.md with your project details"
+echo "1. 🎯 CONFIGURE: Customize CLAUDE.md for your project:"
+echo "   nano CLAUDE.md"
+echo "   # Update project overview, tech stack, and development commands"
 echo ""
 echo "2. Set up project templates (optional but recommended):"
 echo "   cp examples/PROJECT_STATUS.md ."
